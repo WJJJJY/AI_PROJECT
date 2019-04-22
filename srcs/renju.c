@@ -72,9 +72,9 @@ gint area_redraw(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 		{
 			if(array[i][j]==HUMAN)
 			{
-				color.red = 65535;
-				color.green = 65535;
-				color.blue = 65535;
+				color.red = 10000;
+				color.green = 10000;
+				color.blue = 10000;
 				gdk_gc_set_rgb_fg_color (gc, &color);
 				gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(j), ROWTOPOS(i), CMANSIZE, CMANSIZE, 0, 360*64);
 				gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(j), ROWTOPOS(i), CMANSIZE, CMANSIZE, 0, 360*64);
@@ -82,9 +82,9 @@ gint area_redraw(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 
 			if(array[i][j]==COMPUTER)
 			{
-				color.red = 10000;
-				color.green = 10000;
-				color.blue = 10000;
+				color.red = 65535;
+				color.green = 65535;
+				color.blue = 65535;
 				gdk_gc_set_rgb_fg_color (gc, &color);
 				gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(j), ROWTOPOS(i), CMANSIZE, CMANSIZE, 0, 360*64);
 				gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(j), ROWTOPOS(i), CMANSIZE, CMANSIZE, 0, 360*64);
@@ -120,9 +120,9 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 	count++;
 	gdk_window_get_pointer(widget->window, &x1, &y1, &state);
 	if(winflag == 0){
-		color.red = 65535;
-		color.green = 65535;
-		color.blue = 65535;
+		color.red = 10000;
+		color.green = 10000;
+		color.blue = 10000;
 		gdk_gc_set_rgb_fg_color (gc, &color);
 		gdk_draw_arc (canvas, gc, TRUE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
 		gdk_draw_arc (canvas, gc, FALSE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
@@ -149,9 +149,9 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 	if(winflag==0 &&rtn==0)
 	{
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
+		color.red = 65535;
+		color.green = 65535;
+		color.blue = 65535;
 		gdk_gc_set_rgb_fg_color (gc, &color);
 		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
 		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
@@ -183,9 +183,9 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 	if(winflag==0 &&rtn==COMPUTER)
 	{
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
+		color.red = 65535;
+		color.green = 65535;
+		color.blue = 65535;
 		gdk_gc_set_rgb_fg_color (gc, &color);
 		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
 		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);

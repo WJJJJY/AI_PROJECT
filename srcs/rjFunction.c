@@ -18,7 +18,12 @@ int Check(int x, int y)
 	return flag;
 }
 
-int dfs(int nodex, int nodey, int d, int player, int vala, int valb)
+int getVal()
+{
+		
+}
+
+int dfs(int nodex, int nodey, int d, int player)
 {
 	array[nodex][nodey] = player;
 	if(d == 0){
@@ -27,21 +32,28 @@ int dfs(int nodex, int nodey, int d, int player, int vala, int valb)
 	}
 
 	if(d & 1){
-		
-		return valb;	
+		int val = INF, i = 0, j = 0;
+		for(i = 0; i < NUM; i++)
+			for(j = 0; j < NUM; j++){
+				if(Check(nodex + i, nodey + j))
+					val = min(val, dfs(nodex + i, nodey + j, d ^ 1, 3 - player));
+			}
+
+		array[nodex][nodey] = EMPTY;
+		return val;
 	}
 	else{
-		int i = 0, j = 0;
-		for(i = -3; i <= 3; i++)
-			for(j = -3; j <= 3; j++){
-				if((i == 0 && j == 0) || nodex + i < 0 || nodex + i >= NUM || nodey + j < 0 || nodey + j >= NUM) continue;
-				vala = max(vala, dfs(nodex + i, nodey + j, d - 1, 3 - player, vala, valb));
-				
+		int val = -INF, i = 0, j = 0;
+		for(i = 0; i < NUM; i++)
+			for(j = 0; j < NUM; j++){
+				if(Check(nodex + i, nodey + j)
+					val = max(val, dfs(nodex + i, nodey + j, d ^ 1, 3 - player));
 			}
-		return vala;
+
+		array[nodex][nodey] = EMPTY;
+		return val;
 	}
 
-	array[nodex][nodey] = EMPTY;
 }
 
 int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
@@ -52,26 +64,13 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 			return 3;
 		array[y1][x1] = HUMAN;
 
-		/*if(judge(COMPUTER, 4, x2, y2)==0)
-		  if(judge(HUMAN, 4, x2 , y2)==0)
-		  if(judge(COMPUTER, 3 , x2, y2)==0)
-		  if(judge(HUMAN, 3, x2 ,y2)==0)
-		  if(forcast(COMPUTER, 3, x2, y2)==0)
-		  if(forcast(HUMAN, 3, x2, y2)==0)
-		  if(forcast(COMPUTER, 2, x2, y2)==0)
-		  if(judge(COMPUTER, 2, x2, y2)==0)
-		  if(firstStep(x1 ,y1, x2, y2)==0)
-		  return -1;
-		 */
-
-		int i = 0, j = 0, x = 0, y = 0;
+		int i = 0, j = 0;
 		int val = -INF;
-
 		for(i = 0; i < NUM; i++)
 			for(j = 0; j < NUM; j++){
 				if(Check(i, j)){
-					int t = dfs(i, j, 4, COMPUTER, -INF, INF);
-					if(t > val) val = t, *x = i, *y = j;
+					int t = dfs(i, j, 0, COMPUTER);
+					if(t > val) val = t, *x2 = i, *y2 = j;
 				}
 			}
 

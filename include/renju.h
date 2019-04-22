@@ -23,6 +23,8 @@
 #define CURTOPOS(x) (x/SIZE*SIZE+(SIZE-CMANSIZE)/2)  /* 鼠标点击转换绘制棋子坐标 */
 #define CURTOROW(x) (x/SIZE)                         /* 鼠标点击转换行数         */
 #define ROWTOPOS(x) (x*SIZE+(SIZE-CMANSIZE)/2)       /* 行数转换绘制棋子坐标     */
+#define min(x, y)   (x < y ? x : y)
+#define max(x, y)   (x > y ? x : y)
  
 int play(int, int, int *, int *);                    /* 游戏接口     */
 int isWin(int );                                     /* 判断获胜     */
