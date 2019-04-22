@@ -4,7 +4,9 @@ GtkWidget *window;
 GtkWidget *fixed;
 GtkWidget *drawing_area;
 GtkWidget *label;
+
 extern int array[NUM][NUM];
+extern int value[NUM][NUM];
 int winflag=0;
 
 char talk1[4][MAXSIZE] = {"瞎猫碰着死耗子，你赢了。", \
