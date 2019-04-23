@@ -25,6 +25,7 @@ int getVal()
 
 int dfs(int nodex, int nodey, int d, int player)
 {
+	int val = 0;
 	array[nodex][nodey] = player;
 	if(d == 0){
 		array[nodex][nodey] = EMPTY;
@@ -46,7 +47,7 @@ int dfs(int nodex, int nodey, int d, int player)
 		int val = -INF, i = 0, j = 0;
 		for(i = 0; i < NUM; i++)
 			for(j = 0; j < NUM; j++){
-				if(Check(nodex + i, nodey + j)
+				if(Check(nodex + i, nodey + j))
 					val = max(val, dfs(nodex + i, nodey + j, d ^ 1, 3 - player));
 			}
 
