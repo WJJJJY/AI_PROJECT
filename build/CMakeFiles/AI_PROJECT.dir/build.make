@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jjjjy/test/project_one
+CMAKE_SOURCE_DIR = /home/jjjjy/test/AI_PROJECT
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jjjjy/test/project_one/build
+CMAKE_BINARY_DIR = /home/jjjjy/test/AI_PROJECT/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/AI_PROJECT.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/AI_PROJECT.dir/flags.make
 
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o: CMakeFiles/AI_PROJECT.dir/flags.make
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o: ../srcs/renju.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jjjjy/test/project_one/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o   -c /home/jjjjy/test/project_one/srcs/renju.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jjjjy/test/AI_PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o   -c /home/jjjjy/test/AI_PROJECT/srcs/renju.c
 
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/AI_PROJECT.dir/srcs/renju.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jjjjy/test/project_one/srcs/renju.c > CMakeFiles/AI_PROJECT.dir/srcs/renju.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jjjjy/test/AI_PROJECT/srcs/renju.c > CMakeFiles/AI_PROJECT.dir/srcs/renju.c.i
 
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/AI_PROJECT.dir/srcs/renju.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jjjjy/test/project_one/srcs/renju.c -o CMakeFiles/AI_PROJECT.dir/srcs/renju.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jjjjy/test/AI_PROJECT/srcs/renju.c -o CMakeFiles/AI_PROJECT.dir/srcs/renju.c.s
 
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o.provides.build: CMakeFiles/AI_PROJECT.d
 
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o: CMakeFiles/AI_PROJECT.dir/flags.make
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o: ../srcs/rjFunction.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jjjjy/test/project_one/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o   -c /home/jjjjy/test/project_one/srcs/rjFunction.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jjjjy/test/AI_PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o   -c /home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c
 
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jjjjy/test/project_one/srcs/rjFunction.c > CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c > CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.i
 
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jjjjy/test/project_one/srcs/rjFunction.c -o CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c -o CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.s
 
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o.requires:
 
@@ -130,7 +130,7 @@ AI_PROJECT: /usr/lib/x86_64-linux-gnu/libglib-2.0.so
 AI_PROJECT: /usr/lib/x86_64-linux-gnu/libfontconfig.so
 AI_PROJECT: /usr/lib/x86_64-linux-gnu/libfreetype.so
 AI_PROJECT: CMakeFiles/AI_PROJECT.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jjjjy/test/project_one/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable AI_PROJECT"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jjjjy/test/AI_PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable AI_PROJECT"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/AI_PROJECT.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -148,6 +148,6 @@ CMakeFiles/AI_PROJECT.dir/clean:
 .PHONY : CMakeFiles/AI_PROJECT.dir/clean
 
 CMakeFiles/AI_PROJECT.dir/depend:
-	cd /home/jjjjy/test/project_one/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jjjjy/test/project_one /home/jjjjy/test/project_one /home/jjjjy/test/project_one/build /home/jjjjy/test/project_one/build /home/jjjjy/test/project_one/build/CMakeFiles/AI_PROJECT.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jjjjy/test/AI_PROJECT/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jjjjy/test/AI_PROJECT /home/jjjjy/test/AI_PROJECT /home/jjjjy/test/AI_PROJECT/build /home/jjjjy/test/AI_PROJECT/build /home/jjjjy/test/AI_PROJECT/build/CMakeFiles/AI_PROJECT.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/AI_PROJECT.dir/depend
 

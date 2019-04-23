@@ -3,7 +3,7 @@
 
 CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o
  ../include/renju.h
- /home/jjjjy/test/project_one/srcs/renju.c
+ /home/jjjjy/test/AI_PROJECT/srcs/renju.c
  /usr/include/atk-1.0/atk/atk-enum-types.h
  /usr/include/atk-1.0/atk/atk.h
  /usr/include/atk-1.0/atk/atkaction.h
@@ -566,7 +566,7 @@ CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o
  /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h
 CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o
  ../include/renju.h
- /home/jjjjy/test/project_one/srcs/rjFunction.c
+ /home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c
  /usr/include/atk-1.0/atk/atk-enum-types.h
  /usr/include/atk-1.0/atk/atk.h
  /usr/include/atk-1.0/atk/atkaction.h

@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/jjjjy/test/project_one/srcs/renju.c" "/home/jjjjy/test/project_one/build/CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o"
-  "/home/jjjjy/test/project_one/srcs/rjFunction.c" "/home/jjjjy/test/project_one/build/CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o"
+  "/home/jjjjy/test/AI_PROJECT/srcs/renju.c" "/home/jjjjy/test/AI_PROJECT/build/CMakeFiles/AI_PROJECT.dir/srcs/renju.c.o"
+  "/home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c" "/home/jjjjy/test/AI_PROJECT/build/CMakeFiles/AI_PROJECT.dir/srcs/rjFunction.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

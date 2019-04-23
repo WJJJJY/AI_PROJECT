@@ -54,10 +54,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jjjjy/test/project_one
+CMAKE_SOURCE_DIR = /home/jjjjy/test/AI_PROJECT
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jjjjy/test/project_one/build
+CMAKE_BINARY_DIR = /home/jjjjy/test/AI_PROJECT/build
 
 #=============================================================================
 # Target rules for target CMakeFiles/AI_PROJECT.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/jjjjy/test/project_one/build
 CMakeFiles/AI_PROJECT.dir/all:
 	$(MAKE) -f CMakeFiles/AI_PROJECT.dir/build.make CMakeFiles/AI_PROJECT.dir/depend
 	$(MAKE) -f CMakeFiles/AI_PROJECT.dir/build.make CMakeFiles/AI_PROJECT.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jjjjy/test/project_one/build/CMakeFiles --progress-num=1,2,3 "Built target AI_PROJECT"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jjjjy/test/AI_PROJECT/build/CMakeFiles --progress-num=1,2,3 "Built target AI_PROJECT"
 .PHONY : CMakeFiles/AI_PROJECT.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/AI_PROJECT.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/AI_PROJECT.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjjjy/test/project_one/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjjjy/test/AI_PROJECT/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/AI_PROJECT.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjjjy/test/project_one/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjjjy/test/AI_PROJECT/build/CMakeFiles 0
 .PHONY : CMakeFiles/AI_PROJECT.dir/rule
 
 # Convenience name for target.

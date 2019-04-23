@@ -18,13 +18,13 @@ stdlib.h
 string.h
 -
 
-/home/jjjjy/test/project_one/srcs/renju.c
+/home/jjjjy/test/AI_PROJECT/srcs/renju.c
 renju.h
-/home/jjjjy/test/project_one/srcs/renju.h
+/home/jjjjy/test/AI_PROJECT/srcs/renju.h
 
-/home/jjjjy/test/project_one/srcs/rjFunction.c
+/home/jjjjy/test/AI_PROJECT/srcs/rjFunction.c
 renju.h
-/home/jjjjy/test/project_one/srcs/renju.h
+/home/jjjjy/test/AI_PROJECT/srcs/renju.h
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h

@@ -118,8 +118,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 	count++;
 	gdk_window_get_pointer(widget->window, &x1, &y1, &state);
 
-	if(winflag==0)
+	if(winflag==0){
 		rtn = play(CURTOROW(x1), CURTOROW(y1), &x2, &y2);
+		printf("%d %d %d %d\n", CURTOROW(x1), CURTOROW(y1), x2, y2);
+	}
 
 
 	if(rtn<0)
