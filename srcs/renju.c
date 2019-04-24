@@ -154,6 +154,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
 		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
 
+		color.red = 10000;
+		color.green = 10000;
+		color.blue = 10000;
+		gdk_gc_set_rgb_fg_color (gc, &color);
 		srand((unsigned)time(0)+count);
 		ran_num = rand()%20;
 		memset(words, 0, sizeof(words));
@@ -164,6 +168,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 	if(winflag==0 &&rtn==HUMAN)
 	{
+		color.red = 10000;
+		color.green = 10000;
+		color.blue = 10000;
+		gdk_gc_set_rgb_fg_color (gc, &color);
 		winflag = 1;
 		srand((unsigned)time(0)+count);
 		ran_num = rand()%4;
@@ -181,6 +189,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 	if(winflag==0 &&rtn==COMPUTER)
 	{
+		color.red = 10000;
+		color.green = 10000;
+		color.blue = 10000;
+		gdk_gc_set_rgb_fg_color (gc, &color);
 		winflag = 1;
 		srand((unsigned)time(0)+count);
 		ran_num = rand()%4;
@@ -198,6 +210,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 	if(rtn==3)
 	{
+		color.red = 10000;
+		color.green = 10000;
+		color.blue = 10000;
+		gdk_gc_set_rgb_fg_color (gc, &color);
 		memset(words, 0, sizeof(words));
 		snprintf(words,sizeof(words)-1, "[电脑]说：请不要耍赖哦！");
 		gtk_label_set_text(label, words);
