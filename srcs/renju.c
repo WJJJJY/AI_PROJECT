@@ -6,7 +6,8 @@ GtkWidget *drawing_area;
 GtkWidget *label;
 
 extern int array[NUM][NUM];
-extern int value[NUM][NUM];
+extern int value[NUM][NUM][3];
+extern int isfirststep;
 int winflag=0;
 
 char talk1[4][MAXSIZE] = {"瞎猫碰着死耗子，你赢了。", \
@@ -222,6 +223,9 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 
 int main(int argc, char **argv)
 {
+	isfirststep = 1;
+	memset(val, 0, sizeof(val));
+
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
 
