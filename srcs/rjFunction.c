@@ -1,7 +1,8 @@
+#include "getval.h"
 #include "renju.h"
 
 int array[NUM][NUM];                    /* 棋盘数组 */
-int value[NUM][NUM][3];
+int value[NUM][NUM][4];
 int isfirststep;
 
 
@@ -9,40 +10,14 @@ int Check(int x, int y)
 {
 	if(array[x][y] != EMPTY) return 0;
 	int flag = 0, i = 0, j = 0;
-	for(i = -3; i <= 3; i++)
-		for(j = -3; j <= 3; j++){
+	for(i = -1; i <= 1; i++)
+		for(j = -1; j <= 1; j++){
 			if(x + i < 0 || y + j < 0 || x + i >= NUM || y + j >= NUM)
 				continue;
 			if(array[x + i][y + j] != EMPTY) flag = 1;
 		}
 
 	return flag;
-}
-
-int calculateValue(int player)
-{
-	int i = 0, j = 0, sum = 0;
-	int mianer = 0, miansan = 0, chongsi = 0, huoer = 0;
-	int huosan = 0, huosi = 0;
-	//活四
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(array[i][j][0] >= 4 && i + 1 < NUM && i - 4 >= 0 && array[i + 1][j] != (3 - player) && array[i - 4][j] != (3 - player)) sum += INF;
-				if(array[i][j][1] >= 4 && i + 1 < NUM && j - 1 >= 0 && i - 1 >= 0 && j + 1 < NUM && array[i + 1][j - 1] != (3 - player) && array[i - 1][j + 1] != (3 - player)) sum += INF;
-				if(array[i][j][2] >= 4 && j - 1 >= 0 && j + 1 < NUM && array[i][j - 1] != (3 - player) && array[i][j + 1] != (3 - player)) sum += INF;
-			}
-		}
-
-	//活三
-	
-}
-
-int getVal(int player)
-{
-	int t = calculateValue(player);
-	if(player == HUMAN) return -t;
-	return t;
 }
 
 void subtractValue(int x, int y, int player)
@@ -60,52 +35,88 @@ void subtractValue(int x, int y, int player)
 		if(x + i >= NUM || y - i < 0 || array[x + i][y - i] != player) break;
 		value[x + i][y - i][1] -= value[x][y][1];
 	}
+	for(i = 1; i < 5; i++){
+		if(x - i < 0 || y - i < 0 || array[x - i][y - i] != player) break;
+		value[x - i][y - i][3] -= value[x][y][3];
+	}
+
+	value[x][y][0] = 0, value[x][y][1] = 0, value[x][y][2] = 0;
 }
 
 void addValue(int x, int y, int player)
 {
+	int i = 0;
+
 	if(x - 1 < 0 || array[x - 1][y] != player) value[x][y][0] = 1;
 	else value[x][y][0] = value[x - 1][y][0] + 1;
 
 	if(y + 1 >= NUM || array[x][y + 1] != player) value[x][y][2] = 1;
 	else value[x][y][2] = value[x][y + 1][2] + 1;
 
-	if(x - 1 < 0 || y + 1 >= NUM || array[x - 1][y + 1] != player) value[x][y][0] = 1;
-	else value[x][y][0] = value[x - 1][y + 1][0] + 1;
+	if(x - 1 < 0 || y + 1 >= NUM || array[x - 1][y + 1] != player) value[x][y][1] = 1;
+	else value[x][y][1] = value[x - 1][y + 1][1] + 1;
+
+	if(x + 1 >= NUM || y + 1 >= NUM || array[x + 1][y + 1] != player) value[x][y][3] = 1;
+	else value[x][y][3] = value[x + 1][y + 1][3] + 1;
+
+	for(i = 1; i < 5; i++){
+		if(x + i >= NUM || array[x + i][y] != player) break;
+		value[x + i][y][0] += value[x][y][0];
+	}
+	for(i = 1; i < 5; i++){
+		if(x + i >= NUM || y - i < 0 || array[x + i][y - i] != player) break;
+		value[x + i][y - i][1] += value[x][y][1];
+	}
+	for(i = 1; i < 5; i++){
+		if(y - i < 0 || array[x][y - i] != player) break;
+		value[x][y - i][2] += value[x][y][2];
+	}
+	for(i = 1; i < 5; i++){
+		if(x - i < 0 || y - i < 0 || array[x - i][y - i] != player) break;
+		value[x - i][y - i][3] += value[x][y][3];
+	}
 }
 
-int dfs(int nodex, int nodey, int d, int player)
+int dfs(int d, int player)
 {
 	int val = 0;
 	if(d == 0) return getVal(player);
 
 	if(d & 1){
-		int val = INF, i = 0, j = 0;
+		int val = INF * 100, i = 0, j = 0;
 		for(i = 0; i < NUM; i++)
 			for(j = 0; j < NUM; j++){
-				if(Check(nodex + i, nodey + j)){
-					array[nodex + i][nodey + j] = player;
-					addValue(nodex + i, nodey + j, player);
-					if(isWin(player)) return -INF * 100;
-					val = min(val, dfs(nodex + i, nodey + j, d ^ 1, 3 - player));
-					array[nodex + i][nodey + j] = EMPTY;
-					subtractValue(nodex + i, nodey + j, player);
+				if(Check(i, j)){
+					array[i][j] = player;
+					addValue(i, j, player);
+					if(isWin(player)){
+						array[i][j] = EMPTY;
+						subtractValue(i, j, player);
+						return -INF * 100;
+					}
+					val = min(val, dfs(d - 1, 3 - player));
+					array[i][j] = EMPTY;
+					subtractValue(i, j, player);
 				}
 			}
 
 		return val;
 	}
 	else{
-		int val = -INF, i = 0, j = 0;
+		int val = -INF * 100, i = 0, j = 0;
 		for(i = 0; i < NUM; i++)
 			for(j = 0; j < NUM; j++){
-				if(Check(nodex + i, nodey + j)){
-					array[nodex + i][nodey + j] = player;
-					addValue(nodex + i, nodey + j, player);
-					if(isWin(player)) return INF * 100;
-					val = max(val, dfs(nodex + i, nodey + j, d ^ 1, 3 - player));
-					array[nodex + i][nodey + j] = EMPTY;
-					subtractValue(nodex + i, nodey + j, player);
+				if(Check(i, j)){
+					array[i][j] = player;
+					addValue(i, j, player);
+					if(isWin(player)){
+						array[i][j] = EMPTY;
+						subtractValue(i, j, player);
+						return INF * 100;
+					}
+					val = max(val, dfs(d - 1, 3 - player));
+					array[i][j] = EMPTY;
+					subtractValue(i, j, player);
 				}
 			}
 
@@ -116,12 +127,12 @@ int dfs(int nodex, int nodey, int d, int player)
 
 int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 {
-	if(array[y1][x1]==EMPTY)
-	{
+	if(array[y1][x1]==EMPTY)	{
 		if(isIllegal(HUMAN, x1, y1)==1)
 			return 3;
 
 		array[y1][x1] = HUMAN;
+		//printf("%d %d\n", y1, x1);
 		addValue(y1, x1, HUMAN);
 		if(isfirststep){
 			firstStep(x1, y1, x2, y2);
@@ -130,14 +141,15 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 		}
 		else{	
 			int i = 0, j = 0;
-			int val = -INF;
+			int val = -INF * 100;
 			for(i = 0; i < NUM; i++)
 				for(j = 0; j < NUM; j++){
 					if(Check(i, j)){
 						array[i][j] = COMPUTER;
 						addValue(i, j, COMPUTER);
 						if(isWin(COMPUTER)) return COMPUTER;
-						int t = dfs(i, j, 0, COMPUTER);
+						//int t = dfs(3, HUMAN);
+						int t = getVal(HUMAN);
 						array[i][j] = EMPTY;
 						subtractValue(i, j, COMPUTER);
 						if(t > val) val = t, *x2 = j, *y2 = i;
@@ -147,6 +159,13 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 			array[*y2][*x2] = COMPUTER;
 			i = *y2, j = *x2;
 			addValue(i, j, COMPUTER);
+
+			/*for(i = 0; i < NUM; i++){
+			  for(j = 0; j < NUM; j++){
+			  printf("%d ", array[i][j]);
+			  }
+			  printf("\n");
+			  }*/
 
 			if(isWin(HUMAN))
 				return HUMAN;
@@ -163,10 +182,11 @@ int isWin(int player)
 
 	for(i=0; i<NUM; i++)
 		for(j=0; j<NUM; j++){
-			if(array[i][j]!=player)    continue;
+			if(array[i][j]!=player) continue;
 			if(value[i][j][0] >= 5) return 1;
 			if(value[i][j][2] >= 5) return 1;
 			if(value[i][j][1] >= 5) return 1;
+			if(value[i][j][3] >= 5) return 1;
 		}
 	return 0;
 }
