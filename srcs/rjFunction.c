@@ -150,8 +150,8 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 						array[i][j] = COMPUTER;
 						addValue(i, j, COMPUTER);
 						if(isWin(COMPUTER)) return COMPUTER;
-						//int t = dfs(3, HUMAN);
-						int t = getVal(HUMAN);
+						int t = dfs(1, HUMAN);
+						//int t = getVal(HUMAN);
 						array[i][j] = EMPTY;
 						subtractValue(i, j, COMPUTER);
 						if(t > val) val = t, *x2 = j, *y2 = i;
