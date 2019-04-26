@@ -15,6 +15,7 @@ int huoSi(player)
 				if(value[i][j][3] >= 4 && i - 1 >= 0 && j - 1 >= 0 && i + 4 < NUM && j + 4 < NUM && array[i - 1][j - 1] != (3 - player) && array[i + 4][j + 4] != (3 - player)) huosi++;
 			}
 		}
+
 	return huosi;
 }
 

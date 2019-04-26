@@ -134,6 +134,8 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 		array[y1][x1] = HUMAN;
 		//printf("%d %d\n", y1, x1);
 		addValue(y1, x1, HUMAN);
+		if(isWin(HUMAN))
+			return HUMAN;
 		if(isfirststep){
 			firstStep(x1, y1, x2, y2);
 			isfirststep = 0;
@@ -167,10 +169,6 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 			  printf("\n");
 			  }*/
 
-			if(isWin(HUMAN))
-				return HUMAN;
-			if(isWin(COMPUTER))
-				return COMPUTER;
 			return 0;
 		}
 	}
