@@ -3,20 +3,185 @@
 int array[NUM][NUM];
 int value[NUM][NUM][4];
 
-int huoSi(player)
+int checkHuoSi(int x, int y, int player, int a, int b)
 {
-	int i = 0, j = 0, huosi = 0;
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] >= 4 && i + 1 < NUM && i - 4 >= 0 && array[i + 1][j] != (3 - player) && array[i - 4][j] != (3 - player)) huosi++;
-				if(value[i][j][1] >= 4 && i + 1 < NUM && j - 1 >= 0 && i - 4 >= 0 && j + 4 < NUM && array[i + 1][j - 1] != (3 - player) && array[i - 4][j + 4] != (3 - player)) huosi++;
-				if(value[i][j][2] >= 4 && j - 1 >= 0 && j + 4 < NUM && array[i][j - 1] != (3 - player) && array[i][j + 4] != (3 - player)) huosi++;
-				if(value[i][j][3] >= 4 && i - 1 >= 0 && j - 1 >= 0 && i + 4 < NUM && j + 4 < NUM && array[i - 1][j - 1] != (3 - player) && array[i + 4][j + 4] != (3 - player)) huosi++;
+	int i = 0;
+	if(array[x][y] != player) return 0;
+	if(x - a >= NUM || x - a < 0 || y - b < 0 || y - b >= NUM) return 0;
+	if(x + 4 * a >= NUM || x + 4 * a < 0 || y + 4 * b >= NUM || y + 4 * b < 0) return 0;
+	if(array[x - a][y - b] != EMPTY) return 0;	
+	if(array[x + 4 * a][y + 4 * b] != EMPTY) return 0;
+	for(i = 1; i < 4; i++) if(array[x + a * i][y + b * i] != player) return 0;	
+	return 1;
+}
+
+int huoSi(int i, int j, int player)
+{
+	int huosi = 0;
+	if(checkHuoSi(i, j, player, -1, 0)) huosi++; //0
+	if(checkHuoSi(i, j, player, -1, 1)) huosi++; //1
+	if(checkHuoSi(i, j, player,  0, 1)) huosi++; //2
+	if(checkHuoSi(i, j, player,  1, 1)) huosi++; //3
+	return huosi;
+}
+
+int checkChongSi(int x, int y, int player, int a, int b)
+{
+	int t = 0, i = 0, c = 0;
+	int flaga = 0, flagb = 0;
+	if(array[x][y] != player) return 0;
+	if(x + 3 * a < NUM && x + 3 * a >= 0 && y + 3 * b < NUM && y + 3 * b >= 0){
+		for(i = 0; i < 4; i++) if(array[x + i * a][y + i * b] == player) c++;
+		if(c == 4){
+			if(x - a < 0 || x - a >= NUM || y - b < 0 || y - b >= NUM || (x - a >= 0 && x - a < NUM && y - b >= 0 && y - b < NUM && array[x - a][y - b] == (3 - player))) flaga = 1;
+			if(x + 4 * a < 0 || x + 4 * a >= NUM || y + 4 * b >= NUM || y + 4 * b < 0 || (x + 4 * a >= 0 && x + 4 * a < NUM && y + 4 * b < NUM && y + 4 * b >= 0 && array[x + 4 * a][y + 4 * b] == (3 - player))) flagb = 1;
+			if(flaga ^ flagb) return 1;
+		}
+	}
+	if(x + 4 * a < NUM && x + 4 * a >= 0 && y + 4 * b < NUM && y + 4 * b >= 0){
+		for(i = 0; i < 5; i++)
+			if(array[x + i * a][y + i * b] != player){
+				if(array[x + i * a][y + i * b] == EMPTY) t++;	
+				else return 0;
+			}
+		if(t == 1) return 1;
+		return 0;
+	}
+	return 0;
+}
+
+int chongSi(int i, int j, int player)
+{
+	int chongsi = 0;
+	if(checkChongSi(i, j, player, -1, 0)) chongsi++;
+	if(checkChongSi(i, j, player, -1, 1)) chongsi++;
+	if(checkChongSi(i, j, player, 0, 1)) chongsi++;
+	if(checkChongSi(i, j, player, 1, 1)) chongsi++;
+	return chongsi;
+}
+
+int checkHuoSan(int x, int y, int player, int a, int b)
+{
+	int i = 0, check = 0;
+	if(array[x][y] != player) return 0;
+	for(i = 1; i < 4; i++){
+		if(x + i * a >= 0 && x + i * a < NUM && y + i * b >= 0 && y + i * b < NUM){
+			if(array[x + i * a][y + i * b] == (3 - player)) break;
+			if(array[x + i * a][y + i * b] == EMPTY){
+				array[x + i * a][y + i * b] = player;
+				check = checkHuoSi(x, y, player, a, b);
+				array[x + i * a][y + i * b] = EMPTY;
+				if(check) return check;
 			}
 		}
+	}
+	return 0;
+}
 
-	return huosi;
+int huoSan(int i, int j, int player)
+{
+	int huosan = 0;
+	if(checkHuoSan(i, j, player, -1, 0)) huosan++;
+	if(checkHuoSan(i, j, player, -1, 1)) huosan++;
+	if(checkHuoSan(i, j, player, 0, 1)) huosan++;
+	if(checkHuoSan(i, j, player, 1, 1)) huosan++;
+	return huosan;
+}
+
+int checkMianSan(int x, int y, int player, int a, int b)
+{
+	int check = 0, i = 0;
+	if(array[x][y] != player) return 0;
+	if(x - a >= 0 && x - a < NUM && y - b >= 0 && y - b < NUM && array[x - a][y - b] == EMPTY){
+		array[x - a][y - b] = player;
+		check = checkChongSi(x - a, y - b, player, a, b);
+		array[x - a][y - b] = EMPTY;
+		if(check) return check;
+	}
+	for(i = 1; i < 4; i++){
+		if(x + i * a >= 0 && x + i * b < NUM && y + i * b < NUM && y + i * b >= 0){
+			if(array[x + i * a][y + i * b] == (3 - player)) break;
+			if(array[x + i * a][y + i * b] == EMPTY){
+				array[x + i * a][y + i * b] = player;
+				check = checkChongSi(x, y, player, a, b);
+				array[x + i * a][y + i * b] = EMPTY;
+				if(check) return check;
+			}
+		}
+	}
+	return 0;
+}
+
+int mianSan(int i, int j, int player)
+{
+	int miansan = 0;
+	if(checkMianSan(i, j, player, -1, 0)) miansan++;
+	if(checkMianSan(i, j, player, -1, 1)) miansan++;
+	if(checkMianSan(i, j, player, 0, 1)) miansan++;
+	if(checkMianSan(i, j, player, 1, 1)) miansan++;
+	return miansan;
+}
+
+int checkHuoEr(int x, int y, int player, int a, int b)
+{
+	int i = 0, check = 0;
+	if(array[x][y] != player) return 0;
+	for(i = 1; i < 3; i++){
+		if(x + i * a < NUM && x + i * a >= 0 && y + i * b < NUM && y + i * b >= 0){
+			if(array[x + i * a][y + i * b] == (3 - player)) break;
+			if(array[x + i * a][y + i * b] == EMPTY){
+				array[x + i * a][y + i * b] = player;
+				check = checkHuoSan(x, y, player, a, b);
+				array[x + i * a][y + i * b] = EMPTY;
+				if(check) return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int huoEr(int i, int j, int player)
+{
+	int huoer = 0;
+	if(checkHuoEr(i, j, player, -1, 0)) huoer++;
+	if(checkHuoEr(i, j, player, -1, 1)) huoer++;
+	if(checkHuoEr(i, j, player, 0, 1)) huoer++;
+	if(checkHuoEr(i, j, player, 1, 1)) huoer++;
+	return huoer;
+}
+
+int checkMianEr(int x, int y, int player, int a, int b)
+{
+	int check = 0, i = 0;
+	if(array[x][y] != player) return 0;
+	if(x - a >= 0 && x - a < NUM && y - b >= 0 && y - b < NUM && array[x - a][y - b] == EMPTY){
+		array[x - a][y - b] = player;
+		check = checkMianSan(x - a, y - b, player, a, b);
+		array[x - a][y - b] = EMPTY;
+		if(check) return 1;
+	}
+	for(i = 1; i < 4; i++){
+		if(x + i * a >= 0 && x + i * a < NUM && y + i * b >= 0 && y + i * b < NUM){
+			if(array[x + i * a][y + i * b] == (3 - player)) break;
+			if(array[x + i * a][y + i * b] == EMPTY){
+				array[x + i * a][y + i * b] = player;
+				check = checkMianSan(x, y, player, a, b);
+				array[x + i * a][y + i * b] = EMPTY;
+				if(check) return check;
+			}
+		}
+	}
+	return 0;
+}
+
+int mianEr(int i, int j, int player)
+{
+	int mianer = 0;
+	if(checkMianEr(i, j, player, -1, 0)) mianer++;
+	if(checkMianEr(i, j, player, -1, 1)) mianer++;
+	if(checkMianEr(i, j, player, 0, 1)) mianer++;
+	if(checkMianEr(i, j, player, 1, 1)) mianer++;
+	return mianer;
 }
 
 int calculateValue(int nextplayer, int player)
@@ -24,125 +189,29 @@ int calculateValue(int nextplayer, int player)
 	int i = 0, j = 0, sum = 0;
 	int mianer = 0, miansan = 0, chongsi = 0, huoer = 0;
 	int huosan = 0, huosi = 0;
-	int flaga = 0, flagb = 0, wulian = 0;
+	int flaga = 0, flagb = 0, t = 0;
 
-	huosi = huoSi(player);
-
-	//活三
 	for(i = 0; i < NUM; i++)
 		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] == 3 && i + 1 < NUM && i - 3 >= 0 && array[i + 1][j] != (3 - player) && array[i - 3][j] != (3 - player)) huosan++;
-				if(value[i][j][1] == 3 && i + 1 < NUM && j - 1 >= 0 && i - 3 >= 0 && j + 3 < NUM && array[i+ 1][j - 1] != (3 - player) && array[i - 3][j + 3] != (3 - player)) huosan++;
-				if(value[i][j][2] == 3 && j - 1 >= 0 && j + 3 < NUM && array[i][j - 1] != (3 - player) && array[i][j + 3] != (3 - player)) huosan++;
-				if(value[i][j][3] == 3 && i - 1 >= 0 && j - 1 >= 0 && i + 3 < NUM && j + 3 < NUM && array[i - 1][j - 1] != (3 - player) && array[i + 3][j + 3] != (3 - player)) huosan++;
-			}
+			t = huoSi(i, j, player);
+			huosi += t;
+			if(t > 0) continue;
+			t = chongSi(i, j, player);
+			chongsi += t;
+			if(t > 0) continue;
+			t = huoSan(i, j, player);
+			huosan += t;
+			if(t > 0) continue;
+			t = mianSan(i, j, player);
+			miansan += t;
+			if(t > 0) continue;
+			t = huoEr(i, j, player);
+			huoer += t;
+			if(t > 0) continue;
+			mianer += mianEr(i, j, player);
 		}
 
-	//活二
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] == 2 && i + 1 < NUM && i - 2 >= 0 && array[i + 1][j] != (3 - player) && array[i - 2][j] != (3 - player)) huoer++;
-				if(value[i][j][1] == 2 && i + 1 < NUM && j - 1 >= 0 && i - 2 >= 0 && j + 2 < NUM && array[i+ 1][j - 1] != (3 - player) && array[i - 2][j + 2] != (3 - player)) huoer++;
-				if(value[i][j][2] == 2 && j - 1 >= 0 && j + 2 < NUM && array[i][j - 1] != (3 - player) && array[i][j + 2] != (3 - player)) huoer++;
-				if(value[i][j][3] == 2 && i - 1 >= 0 && j - 1 >= 0 && i + 2 < NUM && j + 2 < NUM && array[i - 1][j - 1] != (3 - player) && array[i + 2][j + 2] != (3 - player)) huoer++;
-			}
-		}
-
-	//冲四
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] == 4){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || (i + 1 < NUM && array[i + 1][j] == (3 -  player))) flaga = 1;
-					if(i - 4 < 0 || (i - 4 >= 0 && array[i - 4][j] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) chongsi++;
-				}
-				if(value[i][j][1] == 4){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || j - 1 < 0 || (i + 1 < NUM && j - 1 >= 0 && array[i + 1][j - 1] == (3 - player))) flaga = 1;
-					if(i - 4 < 0 || j + 4 >= NUM || (i - 4 >= 0 && j + 4 < NUM && array[i - 4][j + 4] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) chongsi++;
-				}
-				if(value[i][j][2] == 4){
-					flaga = 0, flagb = 0;
-					if(j - 1 < 0 || (j - 1 >= 0 && array[i][j - 1] == (3 - player))) flaga = 1;
-					if(j + 4 >= NUM || (j + 4 < NUM && array[i][j + 4] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) chongsi++;
-				}
-				if(value[i][j][3] == 4){
-					flaga = 0, flagb = 0;
-					if(i - 1 < 0 || j - 1 < 0 || (i - 1 >= 0 && j - 1 >= 0 && array[i - 1][j - 1] == (3 - player))) flaga = 1;
-					if(i + 4 >= NUM || j + 4 >= NUM || (i + 4 < NUM && j + 4 < NUM && array[i + 4][j + 4] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) chongsi++;
-				}
-			}
-		}
-
-	//眠三
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] == 3){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || (i + 1 < NUM && array[i + 1][j] == (3 -  player))) flaga = 1;
-					if(i - 3 < 0 || (i - 3 >= 0 && array[i - 3][j] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) miansan++;
-				}
-				if(value[i][j][1] == 3){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || j - 1 < 0 || (i + 1 < NUM && j - 1 >= 0 && array[i + 1][j - 1] == (3 - player))) flaga = 1;
-					if(i - 3 < 0 || j + 3 >= NUM || (i - 3 >= 0 && j + 3 < NUM && array[i - 3][j + 3] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) miansan++;
-				}
-				if(value[i][j][2] == 3){
-					flaga = 0, flagb = 0;
-					if(j - 1 < 0 || (j - 1 >= 0 && array[i][j - 1] == (3 - player))) flaga = 1;
-					if(j + 3 >= NUM || (j + 3 < NUM && array[i][j + 3] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) miansan++;
-				}
-				if(value[i][j][3] == 3){
-					flaga = 0, flagb = 0;
-					if(i - 1 < 0 || j - 1 < 0 || (i - 1 >= 0 && j - 1 >= 0 && array[i - 1][j - 1] == (3 - player))) flaga = 1;
-					if(i + 3 >= NUM || j + 3 >= NUM || (i + 3 < NUM && j + 3 < NUM && array[i + 3][j + 3] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) miansan++;
-				}
-			}
-		}
-
-	//眠二
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			if(array[i][j] == player){
-				if(value[i][j][0] == 2){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || (i + 1 < NUM && array[i + 1][j] == (3 -  player))) flaga = 1;
-					if(i - 2 < 0 || (i - 2 >= 0 && array[i - 2][j] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) mianer++;
-				}
-				if(value[i][j][1] == 2){
-					flaga = 0, flagb = 0;
-					if(i + 1 >= NUM || j - 1 < 0 || (i + 1 < NUM && j - 1 >= 0 && array[i + 1][j - 1] == (3 - player))) flaga = 1;
-					if(i - 2 < 0 || j + 2 >= NUM || (i - 2 >= 0 && j + 2 < NUM && array[i - 2][j + 2] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) mianer++;
-				}
-				if(value[i][j][2] == 2){
-					flaga = 0, flagb = 0;
-					if(j - 1 < 0 || (j - 1 >= 0 && array[i][j - 1] == (3 - player))) flaga = 1;
-					if(j + 2 >= NUM || (j + 2 < NUM && array[i][j + 2] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) mianer++;
-				}
-				if(value[i][j][3] == 2){
-					flaga = 0, flagb = 0;
-					if(i - 1 < 0 || j - 1 < 0 || (i - 1 >= 0 && j - 1 >= 0 && array[i - 1][j - 1] == (3 - player))) flaga = 1;
-					if(i + 2 >= NUM || j + 2 >= NUM || (i + 2 < NUM && j + 2 < NUM && array[i + 2][j + 2] == (3 - player))) flagb = 1;
-					if(flaga ^ flagb) mianer++;
-				}
-			}
-		}
-
+	//printf("%d %d %d %d %d %d\n", huosi, chongsi, huosan, miansan, huoer, mianer);
 	if(nextplayer == player){
 		sum += (chongsi + huosi) * INF;			
 		sum += (huosan * INF >> 6);

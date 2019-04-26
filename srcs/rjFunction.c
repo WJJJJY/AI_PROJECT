@@ -10,8 +10,8 @@ int Check(int x, int y)
 {
 	if(array[x][y] != EMPTY) return 0;
 	int flag = 0, i = 0, j = 0;
-	for(i = -1; i <= 1; i++)
-		for(j = -1; j <= 1; j++){
+	for(i = -2; i <= 2; i++)
+		for(j = -2; j <= 2; j++){
 			if(x + i < 0 || y + j < 0 || x + i >= NUM || y + j >= NUM)
 				continue;
 			if(array[x + i][y + j] != EMPTY) flag = 1;
