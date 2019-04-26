@@ -5,6 +5,7 @@ GtkWidget *fixed;
 GtkWidget *drawing_area;
 GtkWidget *label;
 extern int array[NUM][NUM];
+int isfirst = 1;
 int winflag=0;
 
 char talk1[4][MAXSIZE] = {"瞎猫碰着死耗子，你赢了。", \
@@ -115,121 +116,135 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 	canvas = widget->window;
 	gc = widget->style->fg_gc[GTK_WIDGET_STATE(widget)];
 
-	count++;
-	gdk_window_get_pointer(widget->window, &x1, &y1, &state);
-
-	if(winflag==0){
-		rtn = play(CURTOROW(x1), CURTOROW(y1), &x2, &y2);
-		printf("%d %d %d %d\n", CURTOROW(x1), CURTOROW(y1), x2, y2);
-	}
-
-
-	if(rtn<0)
-	{
-		memset(words, 0, sizeof(words));
-		snprintf(words,sizeof(words)-1, "[电脑]说：请重新开始吧！");
-		gtk_label_set_text(label, words);
-
-		/*显示对话框*/
-		memset(msg, 0, sizeof(msg));
-		snprintf(msg, sizeof(msg)-1, "可能已平局？！");
-		dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-	}
-
-	if(winflag==0 &&rtn==0)
-	{
+	if(isfirst){
+		printf("++++++++++\n");
+		count++;
+		gdk_window_get_pointer(widget->window, &x1, &y1, &state);
 		color.red = 10000;
 		color.green = 10000;
 		color.blue = 10000;
+		array[8][8] = HUMAN;
 		gdk_gc_set_rgb_fg_color (gc, &color);
-		gdk_draw_arc (canvas, gc, TRUE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
-		gdk_draw_arc (canvas, gc, FALSE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
-
-		color.red = 65535;
-		color.green = 65535;
-		color.blue = 65535;
-		gdk_gc_set_rgb_fg_color (gc, &color);
-		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
-		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
-
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
-		gdk_gc_set_rgb_fg_color (gc, &color);
-		srand((unsigned)time(0)+count);
-		ran_num = rand()%20;
-		memset(words, 0, sizeof(words));
-		snprintf(words,sizeof(words)-1, "[电脑]说：%s", talk3[ran_num]);
-		//        snprintf(words,sizeof(words)-1, "x2[%d], y2[%d], rtn[%d], winflag[%d]", x2, y2, rtn, winflag );
-		gtk_label_set_text(label, words);
+		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(8), ROWTOPOS(8), CMANSIZE, CMANSIZE, 0, 360*64);
+		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(8), ROWTOPOS(8), CMANSIZE, CMANSIZE, 0, 360*64);
+		isfirst = 0;
 	}
+	else{
+		count++;
+		gdk_window_get_pointer(widget->window, &x1, &y1, &state);
 
-	if(winflag==0 &&rtn==HUMAN)
-	{
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
-		gdk_gc_set_rgb_fg_color (gc, &color);
-		winflag = 1;
-		srand((unsigned)time(0)+count);
-		ran_num = rand()%4;
-		memset(words, 0, sizeof(words));
-		snprintf(words, sizeof(words)-1, "[电脑]说：%s", talk1[ran_num]);
-		gtk_label_set_text(label, words);
+		if(winflag==0){
+			rtn = play(CURTOROW(x1), CURTOROW(y1), &x2, &y2);
+			printf("%d %d %d %d\n", CURTOROW(x1), CURTOROW(y1), x2, y2);
+		}
 
-		/*显示对话框*/
-		memset(msg, 0, sizeof(msg));
-		snprintf(msg, sizeof(msg)-1, "[玩家] 获胜\n共 [%d] 步棋", count);
-		dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-	}
 
-	if(winflag==0 &&rtn==COMPUTER)
-	{
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
-		gdk_gc_set_rgb_fg_color (gc, &color);
-		winflag = 1;
-		srand((unsigned)time(0)+count);
-		ran_num = rand()%4;
-		memset(words, 0, sizeof(words));
-		snprintf(words,sizeof(words)-1, "[电脑]说：%s", talk2[ran_num]);
-		gtk_label_set_text(label, words);
+		if(rtn<0)
+		{
+			memset(words, 0, sizeof(words));
+			snprintf(words,sizeof(words)-1, "[电脑]说：请重新开始吧！");
+			gtk_label_set_text(label, words);
 
-		/*显示对话框*/
-		memset(msg, 0, sizeof(msg));
-		snprintf(msg, sizeof(msg)-1, "[电脑] 获胜\n共 [%d] 步棋", count);
-		dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
-	}
+			/*显示对话框*/
+			memset(msg, 0, sizeof(msg));
+			snprintf(msg, sizeof(msg)-1, "可能已平局？！");
+			dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+		}
 
-	if(rtn==3)
-	{
-		color.red = 10000;
-		color.green = 10000;
-		color.blue = 10000;
-		gdk_gc_set_rgb_fg_color (gc, &color);
-		memset(words, 0, sizeof(words));
-		snprintf(words,sizeof(words)-1, "[电脑]说：请不要耍赖哦！");
-		gtk_label_set_text(label, words);
+		if(winflag==0 &&rtn==0)
+		{
+			color.red = 65535;
+			color.green = 65535;
+			color.blue = 65535;
+			gdk_gc_set_rgb_fg_color (gc, &color);
+			gdk_draw_arc (canvas, gc, TRUE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
+			gdk_draw_arc (canvas, gc, FALSE, CURTOPOS(x1), CURTOPOS(y1), CMANSIZE, CMANSIZE, 0, 360*64);
 
-		/*显示对话框*/
-		memset(msg, 0, sizeof(msg));
-		snprintf(msg, sizeof(msg)-1, "不符合游戏规则！");
-		dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
-		gtk_dialog_run(GTK_DIALOG(dialog));
-		gtk_widget_destroy(dialog);
+			color.red = 10000;
+			color.green = 10000;
+			color.blue = 10000;
+			gdk_gc_set_rgb_fg_color (gc, &color);
+			gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
+			gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(x2), ROWTOPOS(y2), CMANSIZE, CMANSIZE, 0, 360*64);
+
+			srand((unsigned)time(0)+count);
+			ran_num = rand()%20;
+			memset(words, 0, sizeof(words));
+			snprintf(words,sizeof(words)-1, "[电脑]说：%s", talk3[ran_num]);
+			//        snprintf(words,sizeof(words)-1, "x2[%d], y2[%d], rtn[%d], winflag[%d]", x2, y2, rtn, winflag );
+			gtk_label_set_text(label, words);
+		}
+
+		if(winflag==0 &&rtn==HUMAN)
+		{
+			color.red = 10000;
+			color.green = 10000;
+			color.blue = 10000;
+			gdk_gc_set_rgb_fg_color (gc, &color);
+			winflag = 1;
+			srand((unsigned)time(0)+count);
+			ran_num = rand()%4;
+			memset(words, 0, sizeof(words));
+			snprintf(words, sizeof(words)-1, "[电脑]说：%s", talk1[ran_num]);
+			gtk_label_set_text(label, words);
+
+			/*显示对话框*/
+			memset(msg, 0, sizeof(msg));
+			snprintf(msg, sizeof(msg)-1, "[玩家] 获胜\n共 [%d] 步棋", count);
+			dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+		}
+
+		if(winflag==0 &&rtn==COMPUTER)
+		{
+			color.red = 10000;
+			color.green = 10000;
+			color.blue = 10000;
+			gdk_gc_set_rgb_fg_color (gc, &color);
+			winflag = 1;
+			srand((unsigned)time(0)+count);
+			ran_num = rand()%4;
+			memset(words, 0, sizeof(words));
+			snprintf(words,sizeof(words)-1, "[电脑]说：%s", talk2[ran_num]);
+			gtk_label_set_text(label, words);
+
+			/*显示对话框*/
+			memset(msg, 0, sizeof(msg));
+			snprintf(msg, sizeof(msg)-1, "[电脑] 获胜\n共 [%d] 步棋", count);
+			dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+		}
+
+		if(rtn==3)
+		{
+			color.red = 10000;
+			color.green = 10000;
+			color.blue = 10000;
+			gdk_gc_set_rgb_fg_color (gc, &color);
+			memset(words, 0, sizeof(words));
+			snprintf(words,sizeof(words)-1, "[电脑]说：请不要耍赖哦！");
+			gtk_label_set_text(label, words);
+
+			/*显示对话框*/
+			memset(msg, 0, sizeof(msg));
+			snprintf(msg, sizeof(msg)-1, "不符合游戏规则！");
+			dialog=gtk_message_dialog_new(GTK_WINDOW(window),0,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg);
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+		}
 	}
 	return TRUE;
 }
 
 int main(int argc, char **argv)
 {
+
+	isfirst = 1;
+
 	gtk_set_locale();
 	gtk_init(&argc, &argv);
 
@@ -245,6 +260,7 @@ int main(int argc, char **argv)
 	/* Create a new drawing area */
 	drawing_area = gtk_drawing_area_new();
 	gtk_widget_set_size_request(drawing_area, DRAWING_AREA_WIDTH, DRAWING_AREA_HEIGHT);
+
 
 	/* Add events */
 	g_signal_connect(G_OBJECT(drawing_area), "expose_event", G_CALLBACK(area_redraw), NULL);

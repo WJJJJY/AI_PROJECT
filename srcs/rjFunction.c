@@ -18,7 +18,7 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
                             if(forcast(HUMAN, 3, x2, y2)==0)
                                 if(forcast(COMPUTER, 2, x2, y2)==0)
                                     if(judge(COMPUTER, 2, x2, y2)==0)
-                                        if(firstStep(x1 ,y1, x2, y2)==0)
+                                       if(firstStep(x1 ,y1, x2, y2)==0)
                                             return -1;
  
         if(isWin(HUMAN))

@@ -7,7 +7,7 @@
 #define HUMAN                1                       /* 玩 家    */
 #define COMPUTER             2                       /* 电 脑    */
 #define EMPTY                3                       /* 空 子    */
-#define NUM                  30                      /* 棋盘行数 */
+#define NUM                  15                      /* 棋盘行数 */
 #define MAXSIZE              300                     /* 字符数组 */
 #define SIZE                 28                      /* 棋子空间 */
 #define CMANSIZE             (SIZE-10)               /* 棋子尺寸 */

@@ -1,3 +1,0 @@
-/home/jjjjy/test/AI_PROJECT/build/CMakeFiles/rebuild_cache.dir
-/home/jjjjy/test/AI_PROJECT/build/CMakeFiles/AI_PROJECT.dir
-/home/jjjjy/test/AI_PROJECT/build/CMakeFiles/edit_cache.dir
