@@ -123,10 +123,10 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 		color.red = 10000;
 		color.green = 10000;
 		color.blue = 10000;
-		array[8][8] = HUMAN;
+		array[6][8] = HUMAN;
 		gdk_gc_set_rgb_fg_color (gc, &color);
-		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(8), ROWTOPOS(8), CMANSIZE, CMANSIZE, 0, 360*64);
-		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(8), ROWTOPOS(8), CMANSIZE, CMANSIZE, 0, 360*64);
+		gdk_draw_arc (canvas, gc, TRUE, ROWTOPOS(8), ROWTOPOS(6), CMANSIZE, CMANSIZE, 0, 360*64);
+		gdk_draw_arc (canvas, gc, FALSE, ROWTOPOS(8), ROWTOPOS(6), CMANSIZE, CMANSIZE, 0, 360*64);
 		isfirst = 0;
 	}
 	else{
