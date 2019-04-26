@@ -18,7 +18,7 @@
 #define LABELHEIGHT          20                      /* 标签高度 */
 #define WINWIDTH             (DRAWING_AREA_WIDTH+20) /* 窗口高度 */
 #define WINHEIGHT            (DRAWING_AREA_HEIGHT+LABELHEIGHT+25)
-#define INF  				 (1 << 20)
+#define INF  				 (100000000)
  
 #define CURTOPOS(x) (x/SIZE*SIZE+(SIZE-CMANSIZE)/2)  /* 鼠标点击转换绘制棋子坐标 */
 #define CURTOROW(x) (x/SIZE)                         /* 鼠标点击转换行数         */

@@ -64,6 +64,12 @@ int checkHuoSan(int x, int y, int player, int a, int b)
 {
 	int i = 0, check = 0;
 	if(array[x][y] != player) return 0;
+	if(x - a >= 0 && x - a < NUM && y - b >= 0 && y - b < NUM && array[x - a][y - b] == EMPTY){
+		array[x - a][y - b] = player;
+		check = checkHuoSi(x - a, y - b, player, a, b);
+		array[x - a][y - b] = EMPTY;
+		if(check) return check;
+	}
 	for(i = 1; i < 4; i++){
 		if(x + i * a >= 0 && x + i * a < NUM && y + i * b >= 0 && y + i * b < NUM){
 			if(array[x + i * a][y + i * b] == (3 - player)) break;
@@ -126,6 +132,12 @@ int checkHuoEr(int x, int y, int player, int a, int b)
 {
 	int i = 0, check = 0;
 	if(array[x][y] != player) return 0;
+	if(x - a >= 0 && x - a < NUM && y - b >= 0 && y - b < NUM && array[x - a][y - b] == EMPTY){
+		array[x - a][y - b] = player;
+		check = checkHuoSan(x - a, y - b, player, a, b);
+		array[x - a][y - b] = EMPTY;
+		if(check) return check;
+	}
 	for(i = 1; i < 3; i++){
 		if(x + i * a < NUM && x + i * a >= 0 && y + i * b < NUM && y + i * b >= 0){
 			if(array[x + i * a][y + i * b] == (3 - player)) break;
@@ -198,7 +210,6 @@ int calculateValue(int nextplayer, int player)
 			if(t > 0) continue;
 			t = chongSi(i, j, player);
 			chongsi += t;
-			if(t > 0) continue;
 			t = huoSan(i, j, player);
 			huosan += t;
 			if(t > 0) continue;
@@ -214,18 +225,18 @@ int calculateValue(int nextplayer, int player)
 	//printf("%d %d %d %d %d %d\n", huosi, chongsi, huosan, miansan, huoer, mianer);
 	if(nextplayer == player){
 		sum += (chongsi + huosi) * INF;			
-		sum += (huosan * INF >> 6);
-		sum += (miansan * INF >> 8);
-		sum += (huoer * INF >> 10);
-		sum += (mianer * INF >> 12);
+		sum += (huosan * INF / 1000);
+		sum += (miansan * INF / 10000);
+		sum += (huoer * INF / 1000000);
+		sum += (mianer * INF / 10000000);
 	}
 	else{
-		sum += (huosi * INF >> 2);
-		sum += (chongsi * INF >> 4);
-		sum += (huosan * INF >> 8);
-		sum += (miansan * INF >> 8);
-		sum += (huoer * INF >> 12);
-		sum += mianer * INF >> 14;
+		sum += (huosi * INF / 10);
+		sum += (chongsi * INF / 100);
+		sum += (huosan * INF / 10000);
+		sum += (miansan * INF / 100000);
+		sum += (huoer * INF / 10000000);
+		sum += mianer * INF / 100000000;
 	}
 	return sum;
 }
