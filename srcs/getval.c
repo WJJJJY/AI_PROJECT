@@ -214,18 +214,18 @@ int calculateValue(int nextplayer, int player)
 	//printf("%d %d %d %d %d %d\n", huosi, chongsi, huosan, miansan, huoer, mianer);
 	if(nextplayer == player){
 		sum += (chongsi + huosi) * INF;			
-		sum += (huosan * INF >> 6);
-		sum += (miansan * INF >> 8);
-		sum += (huoer * INF >> 10);
-		sum += (mianer * INF >> 12);
+		sum += (huosan * INF / 1000);
+		sum += (miansan * INF / 10000);
+		sum += (huoer * INF / 1000000);
+		sum += (mianer * INF / 10000000);
 	}
 	else{
-		sum += (huosi * INF >> 2);
-		sum += (chongsi * INF >> 4);
-		sum += (huosan * INF >> 8);
-		sum += (miansan * INF >> 8);
-		sum += (huoer * INF >> 12);
-		sum += mianer * INF >> 14;
+		sum += (huosi * INF / 10);
+		sum += (chongsi * INF / 100);
+		sum += (huosan * INF / 10000);
+		sum += (miansan * INF / 100000);
+		sum += (huoer * INF / 10000000);
+		sum += mianer * INF / 100000000;
 	}
 	return sum;
 }
