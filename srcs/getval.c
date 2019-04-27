@@ -231,9 +231,9 @@ int calculateValue(int nextplayer, int player)
 	}*/
 	sum += huosi * INF;
 	if(huosan <= 1) sum += huosan * INF / 10;
-	else sum += INF / 2;
+	else sum += INF;
 	if(chongsi <= 1) sum += chongsi * INF / 100;
-	else sum += INF / 2;
+	else sum += INF;
 	sum += miansan * INF / 2000;
 	sum += huoer * INF / 1000;
 	sum += mianer * INF / 10000;

@@ -17,6 +17,8 @@ string.h
 ../include/renju.h
 gtk/gtk.h
 -
+sys/time.h
+-
 unistd.h
 -
 stdio.h

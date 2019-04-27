@@ -3,21 +3,67 @@
 
 int array[NUM][NUM];                    /* 棋盘数组 */
 int value[NUM][NUM][4];
+int node[NUM * NUM][3];
+int checknode[NUM][NUM];
 int isfirststep;
+int numnode;
+int count = 0;
 
-
-int Check(int x, int y)
+int checkWuLian(int x, int y, int player, int a, int b)
 {
-	if(array[x][y] != EMPTY) return 0;
-	int flag = 0, i = 0, j = 0;
-	for(i = -2; i <= 2; i++)
-		for(j = -2; j <= 2; j++){
-			if(x + i < 0 || y + j < 0 || x + i >= NUM || y + j >= NUM)
-				continue;
-			if(array[x + i][y + j] != EMPTY) flag = 1;
+	int i = 0, j = 0;
+	int flag = 0, p = 0, q = 0;
+	for(i = 4; i >= 0; i--){
+		if(x - a * i >= 0 && x - a * i < NUM && y - b * i >= 0 && y - b * i < NUM){
+			flag = 0, p = x - a * i, q = y - b * i;
+			for(j = 0; j <= 4; j++){
+				if(p + j * a < NUM && p + j * a >= 0 && q + j * b < NUM && q + j * b >= 0 && array[p + j * a][q + j * b] == player) flag++;
+			}
+			if(flag == 5) return 1;
 		}
+	}
+	return 0;
+}
 
-	return flag;
+int wuLian(int x, int y, int player)
+{
+	if(checkWuLian(x, y, player, -1, 0)) return 1;
+	if(checkWuLian(x, y, player, -1, 1)) return 1;
+	if(checkWuLian(x, y, player, 0, 1)) return 1;
+	if(checkWuLian(x, y, player, 1, 1)) return 1;
+	return 0;
+}
+
+int Check(int x, int y, int player)
+{
+	array[x][y] = player;
+	if(huoSi(x, y, player) > 0 || chongSi(x, y, player) > 0 || huoSan(x, y, player) > 0 || mianSan(x, y, player) > 0 || huoEr(x, y, player) > 0 || mianEr(x, y, player) > 0){
+		array[x][y] = EMPTY;
+		return 1;
+	}
+	array[x][y] = 3 - player;
+	if(huoSi(x, y, 3 - player) > 0 || chongSi(x, y, 3 - player) > 0 || huoSan(x, y, 3 - player) > 0 || wuLian(x, y, 3 - player) > 0){
+		array[x][y] = EMPTY;
+		return 1;
+	}
+	return 0;
+}
+
+void addnode(int x, int y)
+{
+	int i = 0, j = 0;
+	for(i = -2; i <= 2; i++){
+		for(j = -2; j <= 2; j++){
+			if(x + i >= 0 && x + i < NUM && y + j >= 0 && y + j < NUM && array[x + i][y + j] == EMPTY){
+				if(checknode[x + i][y + j] == 0){
+					checknode[x + i][y + j] = 1;
+					numnode++;
+					node[numnode][0] = x + i;
+					node[numnode][1] = y + j;
+				}
+			}
+		}
+	}
 }
 
 void subtractValue(int x, int y, int player)
@@ -77,50 +123,74 @@ void addValue(int x, int y, int player)
 	}
 }
 
-int dfs(int d, int player)
+int dfs(int d, int player, int alpha, int beta)
 {
 	int val = 0;
-	if(d == 0) return getVal(player);
+	if(d == 0){
+		count++;
+		//printf("%d\n", count);
+		return getVal(player);
+	}
 
 	if(d & 1){
 		int val = INF * 100, i = 0, j = 0;
-		for(i = 0; i < NUM; i++)
-			for(j = 0; j < NUM; j++){
-				if(Check(i, j)){
-					array[i][j] = player;
-					addValue(i, j, player);
-					if(isWin(player)){
-						array[i][j] = EMPTY;
-						subtractValue(i, j, player);
-						return -INF * 100;
-					}
-					val = min(val, dfs(d - 1, 3 - player));
-					array[i][j] = EMPTY;
-					subtractValue(i, j, player);
+		int k = 0, now = 0;
+		beta = INF * 100;
+		for(k = 0; k <= numnode; k++){
+			i = node[k][0], j = node[k][1];
+			if(array[i][j] == EMPTY && Check(i, j, player)){
+				array[i][j] = player;
+				//addValue(i, j, player);
+				now = numnode;
+				addnode(i, j);
+				if(wuLian(i, j, player)) beta = -INF * 20;
+				val = min(val, dfs(d - 1, 3 - player, alpha, beta));
+				array[i][j] = EMPTY;
+				//subtractValue(i, j, player);
+
+				beta = min(beta, val);
+				while(numnode > now){
+					checknode[node[numnode][0]][node[numnode][1]] = 0;
+					numnode--;
+				}
+				if(alpha > beta){
+					//printf("++++++++++++++++++++\n");
+					return alpha;
 				}
 			}
+		}
 
-		return val;
+		return beta;
 	}
 	else{
 		int val = -INF * 100, i = 0, j = 0;
-		for(i = 0; i < NUM; i++)
-			for(j = 0; j < NUM; j++){
-				if(Check(i, j)){
-					array[i][j] = player;
-					addValue(i, j, player);
-					if(isWin(player)){
-						array[i][j] = EMPTY;
-						subtractValue(i, j, player);
-						return INF * 100;
-					}
-					val = max(val, dfs(d - 1, 3 - player));
-					array[i][j] = EMPTY;
-					subtractValue(i, j, player);
+		alpha = -INF * 100;
+		int k = 0, now = 0;
+		for(k = 0; k <= numnode; k++){
+			i = node[numnode][0], j = node[numnode][1];
+			if(array[i][j] == EMPTY && Check(i, j, player)){
+				array[i][j] = player;
+				//addValue(i, j, player);
+				now = numnode;
+				addnode(i, j);
+				if(wuLian(i, j, player)) alpha = INF * 20;
+				val = max(val, dfs(d - 1, 3 - player, alpha, beta));
+				array[i][j] = EMPTY;
+				//subtractValue(i, j, player);
+
+				alpha = max(val, alpha);
+				while(numnode > now){
+					checknode[node[numnode][0]][node[numnode][1]] = 0;
+					numnode--;
+				}
+				if(alpha > beta){
+					//printf("++++++++++++++++++++\n");
+					return beta;
 				}
 			}
+		}
 
-		return val;
+		return alpha;
 	}
 
 }
@@ -128,49 +198,81 @@ int dfs(int d, int player)
 int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 {
 	if(array[y1][x1]==EMPTY)	{
-		if(isIllegal(HUMAN, x1, y1)==1)
-			return 3;
+		//if(isIllegal(HUMAN, x1, y1)==1)
+		//return 3;
+
+		struct timeval start, end;
+		double timeuse = 0;
+		gettimeofday(&start, NULL);
 
 		array[y1][x1] = HUMAN;
-		//printf("%d %d\n", y1, x1);
-		addValue(y1, x1, HUMAN);
-		if(isWin(HUMAN))
+		//addValue(y1, x1, HUMAN);
+		addnode(y1, x1);
+
+		if(wuLian(y1, x1, HUMAN))
 			return HUMAN;
 		if(isfirststep){
 			firstStep(x1, y1, x2, y2);
 			isfirststep = 0;
+
+			gettimeofday(&end, NULL);
+			timeuse = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+			printf("time=%lfs\n", timeuse);
+
 			return 0;
 		}
 		else{	
-			int i = 0, j = 0;
-			int val = -INF * 100;
-			for(i = 0; i < NUM; i++)
-				for(j = 0; j < NUM; j++){
-					if(Check(i, j)){
-						array[i][j] = COMPUTER;
-						addValue(i, j, COMPUTER);
-						if(isWin(COMPUTER)){
-							*x2 = j, *y2 = i;
-							return COMPUTER;
+			count = 0;
+			int i = 0, j = 0, k = 0;
+			int val = -INF * 100, now = 0;
+			for(k = 0; k <= numnode; k++){
+				i = node[k][0], j = node[k][1];
+				if(array[i][j] == EMPTY && Check(i, j, COMPUTER)){
+					array[i][j] = COMPUTER;
+					//addValue(i, j, COMPUTER);
+					now = numnode;
+					addnode(i, j);
+					if(wuLian(i, j, COMPUTER)){
+						*x2 = j, *y2 = i;
+						for(i = 0; i < NUM; i++){
+							for(j = 0; j < NUM; j++)
+								printf("%d ", array[i][j]);
+							printf("\n");
 						}
-						int t = dfs(1, HUMAN);
-						//int t = getVal(HUMAN);
-						array[i][j] = EMPTY;
-						subtractValue(i, j, COMPUTER);
-						if(t > val) val = t, *x2 = j, *y2 = i;
+						if(checkWuLian(i, j, COMPUTER, -1, 0)) printf("11111\n");
+						if(checkWuLian(i, j, COMPUTER, -1, 1)) printf("22222\n");
+						if(checkWuLian(i, j, COMPUTER, 0, 1)) printf("33333\n");
+						if(checkWuLian(i, j, COMPUTER, 1, 1)) printf("44444\n");
+
+						return COMPUTER;
 					}
+					int t = dfs(3, HUMAN, -INF * 10, 10 * INF);
+					//int t = getVal(HUMAN);
+					array[i][j] = EMPTY;
+					//subtractValue(i, j, COMPUTER);
+					while(numnode > now){
+						checknode[node[numnode][0]][node[numnode][1]] = 0;
+						numnode--;
+					}
+					if(t > val) val = t, *x2 = j, *y2 = i;
 				}
+			}
 
 			array[*y2][*x2] = COMPUTER;
 			i = *y2, j = *x2;
-			addValue(i, j, COMPUTER);
+			//addValue(i, j, COMPUTER);
 
-			/*for(i = 0; i < NUM; i++){
-			  for(j = 0; j < NUM; j++){
-			  printf("%d ", array[i][j]);
-			  }
-			  printf("\n");
-			  }*/
+			for(i = 0; i < NUM; i++){
+				for(j = 0; j < NUM; j++){
+					printf("%d ", array[i][j]);
+				}
+				printf("\n");
+			}
+
+			//for(i = 0; i < numnode; i++) printf("%d %d\n", node[i][0], node[i][1]);
+			gettimeofday(&end, NULL);
+			timeuse = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+			printf("time=%lfs\n", timeuse);
 
 			return 0;
 		}
@@ -206,7 +308,8 @@ int firstStep(int x1, int y1, int *x2, int *y2)
 				*x2 = x1+drX;
 				array[*y2][*x2] = COMPUTER;
 				a = *y2, b = *x2;
-				addValue(a, b, COMPUTER);
+				//addValue(a, b, COMPUTER);
+				addnode(a, b);
 				return 1;
 			}
 		}
