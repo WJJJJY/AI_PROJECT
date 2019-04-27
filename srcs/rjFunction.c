@@ -149,7 +149,10 @@ int play(int x1, int y1, int *x2, int *y2)// x1,y1为HUMAN.
 					if(Check(i, j)){
 						array[i][j] = COMPUTER;
 						addValue(i, j, COMPUTER);
-						if(isWin(COMPUTER)) return COMPUTER;
+						if(isWin(COMPUTER)){
+							*x2 = j, *y2 = i;
+							return COMPUTER;
+						}
 						int t = dfs(1, HUMAN);
 						//int t = getVal(HUMAN);
 						array[i][j] = EMPTY;

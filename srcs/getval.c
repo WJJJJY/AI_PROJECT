@@ -205,39 +205,38 @@ int calculateValue(int nextplayer, int player)
 
 	for(i = 0; i < NUM; i++)
 		for(j = 0; j < NUM; j++){
-			t = huoSi(i, j, player);
-			huosi += t;
-			if(t > 0) continue;
-			t = chongSi(i, j, player);
-			chongsi += t;
-			t = huoSan(i, j, player);
-			huosan += t;
-			if(t > 0) continue;
-			t = mianSan(i, j, player);
-			miansan += t;
-			if(t > 0) continue;
-			t = huoEr(i, j, player);
-			huoer += t;
-			if(t > 0) continue;
+			huosi += huoSi(i, j, player);
+			chongsi += chongSi(i, j, player);
+			huosan += huoSan(i, j, player);
+			miansan += mianSan(i, j, player);
+			huoer += huoEr(i, j, player);
 			mianer += mianEr(i, j, player);
 		}
 
 	//printf("%d %d %d %d %d %d\n", huosi, chongsi, huosan, miansan, huoer, mianer);
-	if(nextplayer == player){
+	/*if(nextplayer == player){
 		sum += (chongsi + huosi) * INF;			
-		sum += (huosan * INF / 1000);
+		sum += (huosan * INF / 100);
 		sum += (miansan * INF / 10000);
 		sum += (huoer * INF / 1000000);
 		sum += (mianer * INF / 10000000);
 	}
 	else{
 		sum += (huosi * INF / 10);
-		sum += (chongsi * INF / 100);
+		sum += (chongsi * INF / 1000);
 		sum += (huosan * INF / 10000);
 		sum += (miansan * INF / 100000);
 		sum += (huoer * INF / 10000000);
 		sum += mianer * INF / 100000000;
-	}
+	}*/
+	sum += huosi * INF;
+	if(huosan <= 1) sum += huosan * INF / 10;
+	else sum += INF / 2;
+	if(chongsi <= 1) sum += chongsi * INF / 100;
+	else sum += INF / 2;
+	sum += miansan * INF / 2000;
+	sum += huoer * INF / 1000;
+	sum += mianer * INF / 10000;
 	return sum;
 }
 
