@@ -9,3 +9,4 @@ int huoSan(int x, int y, int player);
 int mianSan(int x, int y, int player);
 int huoEr(int x, int y, int player);
 int mianEr(int x, int y, int player);
+int wuLian(int x, int y, int player);

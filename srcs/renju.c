@@ -9,8 +9,11 @@ extern int array[NUM][NUM];
 extern int value[NUM][NUM][3];
 extern int node[NUM * NUM][3];
 extern int checknode[NUM][NUM];
+extern int black[NUM * NUM][3];
+extern int white[NUM * NUM][3]; 
 extern int isfirststep;
 extern int numnode;
+extern int numblack, numwhite;
 int winflag=0;
 
 char talk1[4][MAXSIZE] = {"瞎猫碰着死耗子，你赢了。", \
@@ -256,9 +259,12 @@ gint area_click(GtkWidget *widget, GdkEvent *event, gpointer data)
 int main(int argc, char **argv)
 {
 	isfirststep = 1, numnode = -1;
+	numwhite = -1, numblack = -1;
 	memset(value, 0, sizeof(value));
 	memset(node, 0, sizeof(node));
 	memset(checknode, 0, sizeof(checknode));
+	memset(black, 0, sizeof(black));
+	memset(white, 0, sizeof(white));
 
 	gtk_set_locale();
 	gtk_init(&argc, &argv);

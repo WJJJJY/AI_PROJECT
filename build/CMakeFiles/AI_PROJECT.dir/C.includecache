@@ -31,6 +31,8 @@ string.h
 /home/jjjjy/test/AI_PROJECT/srcs/getval.c
 renju.h
 /home/jjjjy/test/AI_PROJECT/srcs/renju.h
+getval.h
+/home/jjjjy/test/AI_PROJECT/srcs/getval.h
 
 /home/jjjjy/test/AI_PROJECT/srcs/renju.c
 renju.h

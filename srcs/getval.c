@@ -1,7 +1,36 @@
 #include "renju.h"
+#include "getval.h"
 
 int array[NUM][NUM];
 int value[NUM][NUM][4];
+int black[NUM * NUM][3];
+int white[NUM * NUM][3];
+int numwhite, numblack;
+
+int checkWuLian(int x, int y, int player, int a, int b)
+{
+	int i = 0, j = 0;
+	int flag = 0, p = 0, q = 0;
+	for(i = 4; i >= 0; i--){
+		if(x - a * i >= 0 && x - a * i < NUM && y - b * i >= 0 && y - b * i < NUM){
+			flag = 0, p = x - a * i, q = y - b * i;
+			for(j = 0; j <= 4; j++){
+				if(p + j * a < NUM && p + j * a >= 0 && q + j * b < NUM && q + j * b >= 0 && array[p + j * a][q + j * b] == player) flag++;
+			}
+			if(flag == 5) return 1;
+		}
+	}
+	return 0;
+}
+
+int wuLian(int x, int y, int player)
+{
+	if(checkWuLian(x, y, player, -1, 0)) return 1;
+	if(checkWuLian(x, y, player, -1, 1)) return 1;
+	if(checkWuLian(x, y, player, 0, 1)) return 1;
+	if(checkWuLian(x, y, player, 1, 1)) return 1;
+	return 0;
+}
 
 int checkHuoSi(int x, int y, int player, int a, int b)
 {
@@ -22,6 +51,11 @@ int huoSi(int i, int j, int player)
 	if(checkHuoSi(i, j, player, -1, 1)) huosi++; //1
 	if(checkHuoSi(i, j, player,  0, 1)) huosi++; //2
 	if(checkHuoSi(i, j, player,  1, 1)) huosi++; //3
+	if(checkHuoSi(i, j, player, 1, 0)) huosi++;
+	if(checkHuoSi(i, j, player, 1, -1)) huosi++;
+	if(checkHuoSi(i, j, player,  0, -1)) huosi++; //2
+	if(checkHuoSi(i, j, player, -1, -1)) huosi++; //3
+
 	return huosi;
 }
 
@@ -57,6 +91,10 @@ int chongSi(int i, int j, int player)
 	if(checkChongSi(i, j, player, -1, 1)) chongsi++;
 	if(checkChongSi(i, j, player, 0, 1)) chongsi++;
 	if(checkChongSi(i, j, player, 1, 1)) chongsi++;
+	if(checkChongSi(i, j, player, 1, 0)) chongsi++;
+	if(checkChongSi(i, j, player, 1, -1)) chongsi++;
+	if(checkChongSi(i, j, player, 0, -1)) chongsi++;
+	if(checkChongSi(i, j, player, -1, -1)) chongsi++;
 	return chongsi;
 }
 
@@ -91,6 +129,10 @@ int huoSan(int i, int j, int player)
 	if(checkHuoSan(i, j, player, -1, 1)) huosan++;
 	if(checkHuoSan(i, j, player, 0, 1)) huosan++;
 	if(checkHuoSan(i, j, player, 1, 1)) huosan++;
+	if(checkHuoSan(i, j, player, 1, 0)) huosan++;
+	if(checkHuoSan(i, j, player, 1, -1)) huosan++;
+	if(checkHuoSan(i, j, player, 0, -1)) huosan++;
+	if(checkHuoSan(i, j, player, -1, -1)) huosan++;
 	return huosan;
 }
 
@@ -125,6 +167,10 @@ int mianSan(int i, int j, int player)
 	if(checkMianSan(i, j, player, -1, 1)) miansan++;
 	if(checkMianSan(i, j, player, 0, 1)) miansan++;
 	if(checkMianSan(i, j, player, 1, 1)) miansan++;
+	if(checkMianSan(i, j, player, 1, 0)) miansan++;
+	if(checkMianSan(i, j, player, 1, -1)) miansan++;
+	if(checkMianSan(i, j, player, 0, -1)) miansan++;
+	if(checkMianSan(i, j, player, -1, -1)) miansan++;
 	return miansan;
 }
 
@@ -159,6 +205,10 @@ int huoEr(int i, int j, int player)
 	if(checkHuoEr(i, j, player, -1, 1)) huoer++;
 	if(checkHuoEr(i, j, player, 0, 1)) huoer++;
 	if(checkHuoEr(i, j, player, 1, 1)) huoer++;
+	if(checkHuoEr(i, j, player, 1, 0)) huoer++;
+	if(checkHuoEr(i, j, player, 1, -1)) huoer++;
+	if(checkHuoEr(i, j, player, 0, -1)) huoer++;
+	if(checkHuoEr(i, j, player, -1, -1)) huoer++;
 	return huoer;
 }
 
@@ -193,6 +243,10 @@ int mianEr(int i, int j, int player)
 	if(checkMianEr(i, j, player, -1, 1)) mianer++;
 	if(checkMianEr(i, j, player, 0, 1)) mianer++;
 	if(checkMianEr(i, j, player, 1, 1)) mianer++;
+	if(checkMianEr(i, j, player, 1, 0)) mianer++;
+	if(checkMianEr(i, j, player, 1, -1)) mianer++;
+	if(checkMianEr(i, j, player, 0, -1)) mianer++;
+	if(checkMianEr(i, j, player, -1, -1)) mianer++;
 	return mianer;
 }
 
@@ -203,32 +257,33 @@ int calculateValue(int nextplayer, int player)
 	int huosan = 0, huosi = 0;
 	int flaga = 0, flagb = 0, t = 0;
 
-	for(i = 0; i < NUM; i++)
-		for(j = 0; j < NUM; j++){
-			huosi += huoSi(i, j, player);
-			chongsi += chongSi(i, j, player);
-			huosan += huoSan(i, j, player);
-			miansan += mianSan(i, j, player);
-			huoer += huoEr(i, j, player);
-			mianer += mianEr(i, j, player);
-		}
+	for(t = 0; t <= numblack; t++){
+		i = black[t][0], j = black[t][1];
+		
+		huosi += huoSi(i, j, player);
+		chongsi += chongSi(i, j, player);
+		huosan += huoSan(i, j, player);
+		miansan += mianSan(i, j, player);
+		huoer += huoEr(i, j, player);
+		mianer += mianEr(i, j, player);
+	}
 
 	//printf("%d %d %d %d %d %d\n", huosi, chongsi, huosan, miansan, huoer, mianer);
 	/*if(nextplayer == player){
-		sum += (chongsi + huosi) * INF;			
-		sum += (huosan * INF / 100);
-		sum += (miansan * INF / 10000);
-		sum += (huoer * INF / 1000000);
-		sum += (mianer * INF / 10000000);
-	}
-	else{
-		sum += (huosi * INF / 10);
-		sum += (chongsi * INF / 1000);
-		sum += (huosan * INF / 10000);
-		sum += (miansan * INF / 100000);
-		sum += (huoer * INF / 10000000);
-		sum += mianer * INF / 100000000;
-	}*/
+	  sum += (chongsi + huosi) * INF;			
+	  sum += (huosan * INF / 100);
+	  sum += (miansan * INF / 10000);
+	  sum += (huoer * INF / 1000000);
+	  sum += (mianer * INF / 10000000);
+	  }
+	  else{
+	  sum += (huosi * INF / 10);
+	  sum += (chongsi * INF / 1000);
+	  sum += (huosan * INF / 10000);
+	  sum += (miansan * INF / 100000);
+	  sum += (huoer * INF / 10000000);
+	  sum += mianer * INF / 100000000;
+	  }*/
 	sum += huosi * INF;
 	if(huosan <= 1) sum += huosan * INF / 10;
 	else sum += INF;
@@ -244,6 +299,7 @@ int getVal(int nextplayer)
 {
 	int computervalue = calculateValue(nextplayer, COMPUTER);
 	int humanvalue = calculateValue(nextplayer, HUMAN);
+	//printf("%d\n", computervalue - humanvalue);
 	return computervalue - humanvalue;
 }
 
