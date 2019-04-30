@@ -1,5 +1,5 @@
 #include "getval.h"
-#include "renju.h"
+#include "Main.h"
 
 int array[NUM][NUM];                    /* 棋盘数组 */
 int value[NUM][NUM][4];

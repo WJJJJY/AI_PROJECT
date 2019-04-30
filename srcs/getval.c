@@ -1,4 +1,4 @@
-#include "renju.h"
+#include "Main.h"
 #include "getval.h"
 
 int array[NUM][NUM];

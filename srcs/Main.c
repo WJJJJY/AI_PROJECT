@@ -1,4 +1,4 @@
-#include "renju.h"
+#include "Main.h"
 
 GtkWidget *window;
 GtkWidget *fixed;
